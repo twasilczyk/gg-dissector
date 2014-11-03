@@ -1,9 +1,14 @@
 #include "packet-gg.h"
 
+extern "C" {
+
+#include <epan/packet.h>
 #include <epan/prefs.h>
 #include <epan/dissectors/packet-tcp.h>
 
-#include <stdio.h>
+}
+
+#include <cstdio>
 
 #include "gg-packet-type.h"
 #include "gg-tvb.h"
@@ -16,7 +21,9 @@ static void proto_register_gg(void);
 
 /**/
 
-const char version[30] = VERSION;
+extern "C" {
+extern const char version[30] = VERSION;
+}
 
 static int proto_gg = -1;
 static dissector_handle_t gg_handle;
@@ -171,14 +178,20 @@ static void dissect_gg(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree)
 		get_gg_packet_len, dissect_gg_packet);
 }
 
+#if 0
 static void gg_format_size_kib(gchar *result, guint32 size)
 {
 	g_snprintf(result, ITEM_LABEL_LENGTH, "%d kiB", size);
 }
+#endif
+
+extern "C" {
 
 void plugin_register(void)
 {
 	proto_register_gg();
+}
+
 }
 
 static void proto_register_gg(void)
@@ -238,9 +251,13 @@ static void proto_register_gg(void)
 		&pref_gg_reassemble_packets);
 }
 
+extern "C" {
+
 void plugin_reg_handoff(void)
 {
 	proto_reg_handoff_gg();
+}
+
 }
 
 static void proto_reg_handoff_gg(void)

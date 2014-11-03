@@ -3,6 +3,8 @@
 
 #include "packet-gg.h"
 
+#include <epan/packet.h>
+
 extern gint ett_gg_bitfield_connectionflags;
 extern const int * gg_bitfield_connectionflags_fields[];
 extern int gg_bitfield_hf_connectionflags_audio;

@@ -67,7 +67,7 @@ gint gg_tvb_dissect_packed_uint(tvbuff_t *tvb, gint offset, proto_tree *tree)
 	guint64 val = gg_tvb_read_packed_uint(tvb, &offset);
 
 	proto_tree_add_bytes_format_value(tree, gg_tvb_packed_uint, tvb, start, offset - start,
-		tvb_get_ptr(tvb, start, offset - start), "%llu", val);
+		tvb_get_ptr(tvb, start, offset - start), "%" G_GUINT64_FORMAT, val);
 
 	return offset;
 }

@@ -3,6 +3,8 @@
 
 #include "packet-gg.h"
 
+#include <epan/packet.h>
+
 extern int gg_tvb_data;
 extern int gg_tvb_byte;
 extern int gg_tvb_packed_uint;

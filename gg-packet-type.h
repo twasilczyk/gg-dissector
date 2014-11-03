@@ -3,6 +3,8 @@
 
 #include "packet-gg.h"
 
+#include <epan/packet.h>
+
 #define GG_PACKET_SEND_NEW_STATUS 0x0002
 #define GG_PACKET_SEND_PONG 0x0007
 #define GG_PACKET_SEND_PING 0x0008

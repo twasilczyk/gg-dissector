@@ -37,4 +37,14 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };
 
+class PBDisplayBlob : public PBDisplay
+{
+private:
+	GGPFieldBlob field;
+public:
+	PBDisplayBlob(GGPFieldBlob field);
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
+
 void dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, std::vector<std::shared_ptr<PBDisplay>> &packet_desc);

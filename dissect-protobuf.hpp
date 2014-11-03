@@ -96,3 +96,4 @@ public:
 };
 
 void dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, std::vector<std::shared_ptr<PBDisplay>> &packet_desc);
+void dissect_protobuf(tvbuff_t *tvb, proto_tree *tree);

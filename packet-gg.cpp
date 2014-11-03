@@ -16,6 +16,7 @@ extern "C" {
 #include "ggp-field.hpp"
 
 #include "dissect-gg11.hpp"
+#include "dissect-protobuf.hpp"
 
 /**/
 
@@ -114,25 +115,10 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 			dissect_gg11_login105(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_SEND_MSG110)
 			dissect_gg11_send_msg110(data_tvb, gg_tree);
-#if 0
-		if (packet_type == GG_PACKET_SEND_LOGIN80)
-			gg_dissect_login_login80(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_SEND_NOTIFY_FIRST ||
-			packet_type == GG_PACKET_SEND_NOTIFY_LAST)
-			gg_dissect_notify_firstlast(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_SEND_NEW_STATUS80)
-			gg_dissect_notify_new_status80(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_SEND_USERLIST100_REQUEST)
-			gg_dissect_userlist100_request(data_tvb, gg_tree, pinfo);
 		else if (packet_type == GG_PACKET_SEND_MPA_ACK)
-			gg_dissect_mpa_ack(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_SEND_CHAT_LEAVE)
-			gg_dissect_chat_leave(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_SEND_CHAT_NEW)
-			gg_dissect_chat_new(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_SEND_CHAT_INVITE)
-			gg_dissect_chat_invite(data_tvb, gg_tree);
-#endif
+			dissect_protobuf(data_tvb, gg_tree);
+		else if (packet_type == GG_PACKET_SEND_UNKNOWN1)
+			dissect_protobuf(data_tvb, gg_tree);
 		else
 			proto_tree_add_item(gg_tree, ggfield_blob, data_tvb, 0, packet_length, FALSE);
 	}
@@ -140,32 +126,16 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 	{
 		if (packet_type == GG_PACKET_RECV_MSG110)
 			dissect_gg11_recv_msg110(data_tvb, gg_tree);
-#if 0
-		if (packet_type == GG_PACKET_RECV_WELCOME)
-			gg_dissect_login_welcome(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_RECV_STATUS80)
-			gg_dissect_notify_status80(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_RECV_NOTIFY_REPLY80)
-			gg_dissect_notify_reply80(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_RECV_USER_DATA)
-			gg_dissect_notify_user_data(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_RECV_USERLIST100_VERSION)
-			gg_dissect_userlist100_version(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_RECV_IMTOKEN)
-			gg_dissect_imtoken(data_tvb, gg_tree);
+		else if (packet_type == GG_PACKET_RECV_CHAT_SEND_MSG_ACK)
+			dissect_protobuf(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_MPA_NOTIFY)
-			gg_dissect_mpa_notify(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_RECV_CHAT_INFO)
-			gg_dissect_chat_info(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_RECV_CHAT_INFO_UPDATE)
-			gg_dissect_chat_info_update(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_RECV_CHAT_CREATED)
-			gg_dissect_chat_created(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_RECV_CHAT_INVITE_ACK)
-			gg_dissect_chat_invite_ack(data_tvb, gg_tree);
+			dissect_protobuf(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_LAST_DATES)
-			gg_tvb_dissect(data_tvb, gg_tree);
-#endif
+			dissect_protobuf(data_tvb, gg_tree);
+		else if (packet_type == GG_PACKET_RECV_OPTIONS)
+			dissect_protobuf(data_tvb, gg_tree);
+		else if (packet_type == GG_PACKET_RECV_LOGIN105_OK)
+			dissect_protobuf(data_tvb, gg_tree);
 		else
 			proto_tree_add_item(gg_tree, ggfield_blob, data_tvb, 0, packet_length, FALSE);
 	}

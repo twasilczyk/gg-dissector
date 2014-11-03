@@ -20,16 +20,15 @@ static GGPFieldHEX64 protobuf_fixedint64
 static gint64
 parse_varint(tvbuff_t *tvb, int &&offset = 0)
 {
-	gint64 val = 0;
-	int val_len = 0;
-	int shift = 0;
+	guint64 val = 0;
+	guint64 shift = 0;
 	bool more = true;
 
 	while (more) {
 		DISSECTOR_ASSERT(tvb_length_remaining(tvb, offset) > 0);
-		DISSECTOR_ASSERT(++val_len <= 8);
+		DISSECTOR_ASSERT(shift <= 64 - 7);
 
-		gint64 b = tvb_get_guint8(tvb, offset++);
+		guint64 b = tvb_get_guint8(tvb, offset++);
 
 		more = b & 0x80;
 		b &= ~0x80;
@@ -78,11 +77,11 @@ public:
 
 	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id)
 	{
-		gint val = parse_varint(tvb, 0);
+		guint64 val = parse_varint(tvb, 0);
 
 		proto_tree_add_bytes_format(tree, protobuf_varint, tvb,
 			0, tvb_length(tvb), NULL,
-			"unknown field %d: %d", id, val);
+			"unknown field %d: %" G_GUINT64_FORMAT, id, val);
 	}
 };
 
@@ -123,6 +122,13 @@ static PBDisplayUnknownVarint displayVarint;
 static PBDisplayUnknownFixedint displayFixedint;
 static PBDisplayUnknownFixedint64 displayFixedint64;
 static PBDisplayUnknownBlob displayBlob;
+
+void dissect_protobuf(tvbuff_t *tvb, proto_tree *tree)
+{
+	vector<shared_ptr<PBDisplay>> empty(0);
+
+	dissect_protobuf(tvb, tree, empty);
+}
 
 void
 dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, vector<shared_ptr<PBDisplay>> &packet_desc)

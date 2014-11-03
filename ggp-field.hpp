@@ -42,3 +42,11 @@ public:
 	GGPFieldEnum32(const char *name, const char *abbrev, const char *blurb,
 		const value_string *vals);
 };
+
+class GGPFieldBlob : public GGPField
+{
+private:
+	virtual void fill_header_field_info(header_field_info &info);
+public:
+	GGPFieldBlob(const char *name, const char *abbrev, const char *blurb);
+};

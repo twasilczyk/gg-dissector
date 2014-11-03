@@ -86,3 +86,15 @@ GGPFieldEnum32::fill_header_field_info(header_field_info &info)
 	info.display = BASE_HEX;
 	info.strings = vals;
 }
+
+GGPFieldBlob::GGPFieldBlob(const char *name, const char *abbrev, const char *blurb):
+	GGPField(name, abbrev, blurb)
+{
+}
+
+void
+GGPFieldBlob::fill_header_field_info(header_field_info &info)
+{
+	info.type = FT_BYTES;
+	info.display = BASE_NONE;
+}

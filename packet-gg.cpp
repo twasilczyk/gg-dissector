@@ -41,6 +41,8 @@ static GGPFieldEnum32 ggfield_sent_packet_type
 	("type (sent)", "gg.sent_packet_type", "type of the sent packet", VALS(gg_packet_sent_names));
 static GGPFieldEnum32 ggfield_recv_packet_type
 	("type (received)", "gg.recv_packet_type", "type of the received packet", VALS(gg_packet_recv_names));
+static GGPFieldBlob ggfield_blob
+	("data", "gg.packet", "packet contents (unknown structure)");
 
 /* packet detail tree */
 gint ett_gg = -1;
@@ -130,8 +132,8 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 		else if (packet_type == GG_PACKET_SEND_MSG110)
 			gg_tvb_dissect(data_tvb, gg_tree);
 		else
-			proto_tree_add_item(gg_tree, hf_gg_packet, data_tvb, 0, packet_length, FALSE);
 #endif
+			proto_tree_add_item(gg_tree, ggfield_blob, data_tvb, 0, packet_length, FALSE);
 	}
 	else // recv
 	{
@@ -161,8 +163,8 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 		else if (packet_type == GG_PACKET_RECV_LAST_DATES)
 			gg_tvb_dissect(data_tvb, gg_tree);
 		else
-			proto_tree_add_item(gg_tree, hf_gg_packet, data_tvb, 0, packet_length, FALSE);
 #endif
+			proto_tree_add_item(gg_tree, ggfield_blob, data_tvb, 0, packet_length, FALSE);
 	}
 }
 
@@ -200,37 +202,6 @@ void plugin_register(void)
 
 static void proto_register_gg(void)
 {
-#if 0
-	static hf_register_info hf[] = {
-		/*gg message header*/
-		{ &hf_gg_packet_length,
-			{ "length", "gg.packet_length",
-			FT_UINT32, BASE_DEC,
-			NULL, 0,
-			"length of packet contents", HFILL }
-		},
-		{ &hf_gg_sent_packet_type,
-			{ "type (sent)", "gg.sent_packet_type",
-			FT_UINT32, BASE_HEX,
-			VALS(gg_packet_sent_names), 0,
-			"type of sent packet", HFILL }
-		},
-		{ &hf_gg_recv_packet_type,
-			{ "type (received)", "gg.recv_packet_type",
-			FT_UINT32, BASE_HEX,
-			VALS(gg_packet_recv_names), 0,
-			"type of received packet", HFILL }
-		},
-		{ &hf_gg_packet,
-			{ "data", "gg.packet",
-			FT_BYTES, BASE_NONE,
-			NULL, 0,
-			"packet contents", HFILL }
-		},
-		GG_TVB_HF
-	};
-#endif
-
 	static gint *ett[] = {
 		&ett_gg,
 		&ett_gg_options
@@ -243,11 +214,7 @@ static void proto_register_gg(void)
 		"GG", /* short name */
 		"gg" /* abbrev */
 		);
-#if 0
-	proto_register_field_array(proto_gg, hf, array_length(hf));
-#else
 	GGPField::register_all(proto_gg);
-#endif
 	proto_register_subtree_array(ett, array_length(ett));
 
 	/* Preference setting */

@@ -19,6 +19,12 @@ GGPField::GGPField(const char *name, const char *abbrev, const char *blurb):
 	all_fields.push_back(this);
 }
 
+GGPField::GGPField(const GGPField &obj):
+	GGPField(obj.name, obj.abbrev, obj.blurb)
+{
+	hf_id = obj.hf_id;
+}
+
 GGPField::~GGPField()
 {
 	for (auto it = all_fields.begin(); it != all_fields.end(); it++) {

@@ -10,10 +10,8 @@
 
 using namespace std;
 
-GGPFieldBlob field_language("language", "gg.login105.language", NULL);
-
 static vector<PBDisplay*> packet_login105 = {
-	new PBDisplayString(&field_language)
+	new PBDisplayString(GGPFieldBlob("language", "gg.login105.language", NULL))
 };
 
 void dissect_gg11_login105(tvbuff_t *tvb, proto_tree *tree)

@@ -21,6 +21,7 @@ protected:
 
 public:
 	GGPField(const char *name, const char *abbrev, const char *blurb);
+	GGPField(const GGPField &obj);
 	~GGPField();
 
 	static void register_all(int parent);

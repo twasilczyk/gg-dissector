@@ -14,6 +14,8 @@ extern "C" {
 #include "gg-tvb.h"
 #include "gg-bitfield.h"
 
+#include "ggp-field.hpp"
+
 /**/
 
 static void proto_reg_handoff_gg(void);
@@ -33,10 +35,12 @@ static guint pref_gg_port = DEFAULT_GG_PORT;
 static gboolean pref_gg_reassemble_packets = TRUE;
 
 /* gg packet header */
+static GGPFieldUINT32 ggfield_packet_length("length", "gg.packet_length", "length of packet contents");
+#if 0
 static int hf_gg_sent_packet_type = -1;
 static int hf_gg_recv_packet_type = -1;
-static int hf_gg_packet_length = -1;
 static int hf_gg_packet = -1;
+#endif
 
 /* packet detail tree */
 gint ett_gg = -1;
@@ -85,22 +89,22 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 	
 	ti = proto_tree_add_item(tree, proto_gg, tvb, 0, packet_length + 8, FALSE);
 	gg_tree = proto_item_add_subtree(ti, ett_gg);
-	
 	if (packet_direction == GG_PACKET_DIRECTION_SENT)
-		proto_tree_add_item(gg_tree, hf_gg_sent_packet_type, tvb,
+		proto_tree_add_item(gg_tree, ggfield_packet_length/*hf_gg_sent_packet_type*/, tvb,
 			0, 4, ENC_LITTLE_ENDIAN);
 	else
-		proto_tree_add_item(gg_tree, hf_gg_recv_packet_type, tvb,
+		proto_tree_add_item(gg_tree, ggfield_packet_length /*hf_gg_recv_packet_type*/, tvb,
 			0, 4, ENC_LITTLE_ENDIAN);
-	
-	proto_tree_add_item(gg_tree, hf_gg_packet_length, tvb,
+
+	proto_tree_add_item(gg_tree, ggfield_packet_length, tvb,
 		4, 4, ENC_LITTLE_ENDIAN);
 
 	if (packet_length == 0)
 		return;
 	
 	data_tvb = tvb_new_subset_remaining(tvb, 8);
-	
+	(void)data_tvb;
+
 	if (pinfo->destport == pref_gg_port) // sent
 	{
 #if 0
@@ -126,8 +130,8 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 		else if (packet_type == GG_PACKET_SEND_MSG110)
 			gg_tvb_dissect(data_tvb, gg_tree);
 		else
-#endif
 			proto_tree_add_item(gg_tree, hf_gg_packet, data_tvb, 0, packet_length, FALSE);
+#endif
 	}
 	else // recv
 	{
@@ -157,8 +161,8 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 		else if (packet_type == GG_PACKET_RECV_LAST_DATES)
 			gg_tvb_dissect(data_tvb, gg_tree);
 		else
-#endif
 			proto_tree_add_item(gg_tree, hf_gg_packet, data_tvb, 0, packet_length, FALSE);
+#endif
 	}
 }
 
@@ -196,6 +200,7 @@ void plugin_register(void)
 
 static void proto_register_gg(void)
 {
+#if 0
 	static hf_register_info hf[] = {
 		/*gg message header*/
 		{ &hf_gg_packet_length,
@@ -224,6 +229,7 @@ static void proto_register_gg(void)
 		},
 		GG_TVB_HF
 	};
+#endif
 
 	static gint *ett[] = {
 		&ett_gg,
@@ -237,7 +243,11 @@ static void proto_register_gg(void)
 		"GG", /* short name */
 		"gg" /* abbrev */
 		);
+#if 0
 	proto_register_field_array(proto_gg, hf, array_length(hf));
+#else
+	GGPField::register_all(proto_gg);
+#endif
 	proto_register_subtree_array(ett, array_length(ett));
 
 	/* Preference setting */

@@ -16,6 +16,8 @@ extern "C" {
 
 #include "ggp-field.hpp"
 
+#include "dissect-gg11.hpp"
+
 /**/
 
 static void proto_reg_handoff_gg(void);
@@ -109,11 +111,11 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 
 	if (pinfo->destport == pref_gg_port) // sent
 	{
+		if (packet_type == GG_PACKET_SEND_LOGIN105)
+			dissect_gg11_login105(data_tvb, gg_tree);
 #if 0
 		if (packet_type == GG_PACKET_SEND_LOGIN80)
 			gg_dissect_login_login80(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_SEND_LOGIN105)
-			gg_dissect_login_login105(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_SEND_NOTIFY_FIRST ||
 			packet_type == GG_PACKET_SEND_NOTIFY_LAST)
 			gg_dissect_notify_firstlast(data_tvb, gg_tree);
@@ -131,8 +133,8 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 			gg_dissect_chat_invite(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_SEND_MSG110)
 			gg_tvb_dissect(data_tvb, gg_tree);
-		else
 #endif
+		else
 			proto_tree_add_item(gg_tree, ggfield_blob, data_tvb, 0, packet_length, FALSE);
 	}
 	else // recv

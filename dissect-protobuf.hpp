@@ -2,16 +2,26 @@ extern "C" {
 #include <epan/packet.h>
 }
 
+#include "ggp-field.hpp"
+
 #include <vector>
+
+typedef enum
+{
+	PBTYPE_VARINT = 0,
+	PBTYPE_FIXED64 = 1,
+	PBTYPE_STRING = 2,
+	PBTYPE_FIXED32 = 5
+} PBType;
 
 class PBDisplay
 {
 private:
-	int expected_type;
+	PBType expected_type;
 public:
-	PBDisplay(int expected_type);
+	PBDisplay(PBType expected_type);
 
-	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id, guint8 type);
+	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id, PBType type);
 	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id);
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };
@@ -40,4 +50,14 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id);
 };
 
-void dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, std::vector<PBDisplay> &packet_desc);
+class PBDisplayString : public PBDisplay
+{
+private:
+	GGPFieldBlob *field;
+public:
+	PBDisplayString(GGPFieldBlob *field);
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
+
+void dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, std::vector<PBDisplay*> &packet_desc);

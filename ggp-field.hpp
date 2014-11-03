@@ -1,3 +1,6 @@
+#ifndef _GGP_FIELD_HPP_
+#define _GGP_FIELD_HPP_
+
 extern "C" {
 #include <epan/packet.h>
 }
@@ -50,3 +53,5 @@ private:
 public:
 	GGPFieldBlob(const char *name, const char *abbrev, const char *blurb);
 };
+
+#endif /* _GGP_FIELD_HPP_ */

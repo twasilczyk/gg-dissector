@@ -22,8 +22,10 @@ GGPField::GGPField(const char *name, const char *abbrev, const char *blurb):
 GGPField::~GGPField()
 {
 	for (auto it = all_fields.begin(); it != all_fields.end(); it++) {
-		if (*it == this)
+		if (*it == this) {
 			all_fields.erase(it);
+			break;
+		}
 	}
 }
 

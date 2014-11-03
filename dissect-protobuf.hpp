@@ -5,6 +5,7 @@ extern "C" {
 #include "ggp-field.hpp"
 
 #include <vector>
+#include <memory>
 
 typedef enum
 {
@@ -60,4 +61,4 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };
 
-void dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, std::vector<PBDisplay*> &packet_desc);
+void dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, std::vector<std::shared_ptr<PBDisplay>> &packet_desc);

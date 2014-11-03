@@ -89,7 +89,7 @@ void PBDisplayBlob::display(proto_tree *tree, tvbuff_t *tvb, int id)
 }
 
 void
-dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, vector<PBDisplay*> &packet_desc)
+dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, vector<shared_ptr<PBDisplay>> &packet_desc)
 {
 	gint offset = 0;
 	PBDisplayVarint displayVarint;
@@ -131,7 +131,7 @@ dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, vector<PBDisplay*> &packet_des
 			DISSECTOR_ASSERT_NOT_REACHED();
 
 		if (id > 0 && id <= packet_desc.size())
-			displayer = packet_desc[id - 1];
+			displayer = packet_desc[id - 1].get();
 
 		displayer->display(tree, sub_tvb, id, static_cast<PBType>(type));
 	}

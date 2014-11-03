@@ -12,7 +12,7 @@ using namespace std;
 
 static vector<shared_ptr<PBDisplay>> packet_login105 = {
 	make_shared<PBDisplayString>(GGPFieldString("language", "gg.login105.language", NULL)),
-	make_shared<PBDisplayBlob>(GGPFieldBlob("uin", "gg.login105.uin", NULL)),
+	make_shared<PBDisplayUIN>(GGPFieldString("uin", "gg.login105.uin", NULL)),
 	make_shared<PBDisplayBlob>(GGPFieldBlob("hash", "gg.login105.hash", NULL)),
 	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy1", "gg.login105.dummy1", NULL)),
 	make_shared<PBDisplayUINT32>(GGPFieldHEX32("dummy2", "gg.login105.dummy2", NULL)),

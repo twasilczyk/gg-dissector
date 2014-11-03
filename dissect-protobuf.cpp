@@ -186,6 +186,20 @@ void PBDisplayVarint::display(proto_tree *tree, tvbuff_t *tvb)
 	proto_tree_add_uint(tree, field, tvb, 0, tvb_length(tvb), parse_varint(tvb));
 };
 
+PBDisplayUIN::PBDisplayUIN(GGPFieldString field):PBDisplay(PBTYPE_STRING),field(field) {};
+void PBDisplayUIN::display(proto_tree *tree, tvbuff_t *tvb)
+{
+	guint8 magic = tvb_get_guint8(tvb, 0);
+	guint8 length = tvb_get_guint8(tvb, 1);
+
+	DISSECTOR_ASSERT((uint)length + 2 == tvb_length(tvb));
+
+	const char *value = (const gchar*)tvb_get_ephemeral_string(tvb, 2, length);
+
+	proto_tree_add_string_format_value(tree, field, tvb, 2, length, value,
+		"%s (%d)", value, magic);
+};
+
 PBDisplayString::PBDisplayString(GGPFieldString field):PBDisplay(PBTYPE_STRING),field(field) {};
 void PBDisplayString::display(proto_tree *tree, tvbuff_t *tvb)
 {

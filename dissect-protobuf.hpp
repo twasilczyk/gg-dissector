@@ -55,6 +55,16 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };
 
+class PBDisplayUIN : public PBDisplay
+{
+private:
+	GGPFieldString field;
+public:
+	PBDisplayUIN(GGPFieldString field);
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
+
 class PBDisplayString : public PBDisplay
 {
 private:

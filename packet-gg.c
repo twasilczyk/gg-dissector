@@ -7,11 +7,7 @@
 
 #include "gg-packet-type.h"
 #include "gg-tvb.h"
-#include "gg-dissect-login.h"
 #include "gg-bitfield.h"
-#include "gg-dissect-userlist.h"
-#include "gg-dissect-new.h"
-#include "gg-dissect-chat.h"
 
 /**/
 
@@ -100,6 +96,7 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 	
 	if (pinfo->destport == pref_gg_port) // sent
 	{
+#if 0
 		if (packet_type == GG_PACKET_SEND_LOGIN80)
 			gg_dissect_login_login80(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_SEND_LOGIN105)
@@ -122,10 +119,12 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 		else if (packet_type == GG_PACKET_SEND_MSG110)
 			gg_tvb_dissect(data_tvb, gg_tree);
 		else
+#endif
 			proto_tree_add_item(gg_tree, hf_gg_packet, data_tvb, 0, packet_length, FALSE);
 	}
 	else // recv
 	{
+#if 0
 		if (packet_type == GG_PACKET_RECV_WELCOME)
 			gg_dissect_login_welcome(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_STATUS80)
@@ -151,6 +150,7 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 		else if (packet_type == GG_PACKET_RECV_LAST_DATES)
 			gg_tvb_dissect(data_tvb, gg_tree);
 		else
+#endif
 			proto_tree_add_item(gg_tree, hf_gg_packet, data_tvb, 0, packet_length, FALSE);
 	}
 }
@@ -210,20 +210,11 @@ static void proto_register_gg(void)
 			"packet contents", HFILL }
 		},
 		GG_TVB_HF
-		GG_DISSECT_LOGIN_HF
-		GG_BITFIELD_HF
-		GG_DISSECT_NOTIFY_HF
-		GG_DISSECT_USERLIST_HF
-		GG_DISSECT_CHAT_HF
-		GG_DISSECT_NEW_HF
 	};
 
 	static gint *ett[] = {
 		&ett_gg,
-		&ett_gg_options,
-		
-		ETT_GG_BITFIELD
-		ETT_GG_DISSECT_NOTIFY
+		&ett_gg_options
 	};
 
 	module_t *gg_module;

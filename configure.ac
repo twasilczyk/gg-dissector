@@ -1,6 +1,6 @@
 AC_INIT([packet-gg], [1.0.0])
 
-AM_INIT_AUTOMAKE([-Wall])
+AM_INIT_AUTOMAKE()
 AM_SILENT_RULES([yes])
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -34,6 +34,7 @@ CFLAGS="$CFLAGS -D_U_=__attribute__\(\(unused\)\)"
 CFLAGS="$CFLAGS -DXUSE_MTSAFE_API -fPIC -DPIC"
 CFLAGS="$CFLAGS -DINET6 -Wpointer-arith -DXTHREADS -D_REENTRANT"
 CFLAGS="$CFLAGS -DHAVE_CONFIG_H"
+CFLAGS="$CFLAGS -Wall -Wextra"
 
 AC_DEFINE([WS_MSVC_NORETURN], [], [Always empty])
 

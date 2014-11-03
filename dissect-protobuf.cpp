@@ -27,31 +27,28 @@ public:
 		return (tvb_length_remaining(tvb, offset) > 0);
 	}
 
-	bool dissect_str(int id)
+	void dissect_str(int id)
 	{
-		(void)id;
-
 		guint8 length = tvb_get_guint8(tvb, offset++); //TODO: varint
 
-		if (tvb_length_remaining(tvb, offset) < length)
-			return false;
+		DISSECTOR_ASSERT(tvb_length_remaining(tvb, offset) >= length);
 
-		proto_tree_add_item(tree, protobuf_blob, tvb, offset, length, FALSE);
+		proto_tree_add_bytes_format(tree, protobuf_blob, tvb, offset, length, NULL,
+			"unknown string (%d)", id);
 
-		return true;
+		offset += length;
 	}
 
-	bool dissect_more()
+	void dissect_more()
 	{
 		guint8 type = tvb_get_guint8(tvb, offset++);
 		guint8 id = type >> 3;
 		type &= 7;
 
-		if (type == 2) {
-			return dissect_str(id);
-		}
-
-		return false;
+		if (type == 2)
+			dissect_str(id);
+		else
+			DISSECTOR_ASSERT_NOT_REACHED();
 	}
 };
 
@@ -61,7 +58,6 @@ dissect_protobuf(tvbuff_t *tvb, proto_tree *tree)
 	ProtobufDissector pbdis(tvb, tree);
 
 	while (pbdis.still_remaining()) {
-		if (!pbdis.dissect_more())
-			break; // TODO: throw an error
+		pbdis.dissect_more();
 	}
 }

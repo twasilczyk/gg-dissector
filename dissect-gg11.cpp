@@ -6,7 +6,14 @@
 
 #include "dissect-protobuf.hpp"
 
+#include <vector>
+
+using namespace std;
+
+static vector<PBDisplay> packet_login105 = {
+};
+
 void dissect_gg11_login105(tvbuff_t *tvb, proto_tree *tree)
 {
-	dissect_protobuf(tvb, tree);
+	dissect_protobuf(tvb, tree, packet_login105);
 }

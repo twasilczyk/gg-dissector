@@ -88,83 +88,48 @@ void PBDisplayBlob::display(proto_tree *tree, tvbuff_t *tvb, int id)
 		"unknown field %d: string[%d]", id, tvb_length(tvb));
 }
 
-class ProtobufDissector
+void
+dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, vector<PBDisplay> &packet_desc)
 {
-private:
 	gint offset = 0;
-	tvbuff_t *tvb;
-	proto_tree *tree;
+	PBDisplayVarint displayVarint;
+	PBDisplayFixedint displayFixedint;
+	PBDisplayBlob displayBlob;
 
-public:
-	ProtobufDissector(tvbuff_t *tvb, proto_tree *tree):
-		tvb(tvb),tree(tree)
-	{
-	}
-
-	bool still_remaining() const
-	{
-		return (tvb_length_remaining(tvb, offset) > 0);
-	}
-
-	void dissect_fixedint(int id)
-	{
-		DISSECTOR_ASSERT(tvb_length_remaining(tvb, offset) >= 4);
-
-		tvbuff_t *sub_tvb = tvb_new_subset_length(tvb, offset, 4);
-		offset += 4;
-
-		PBDisplayFixedint d;
-		d.display(tree, sub_tvb, id);
-	}
-
-	void dissect_varint(int id)
-	{
-		gint original_offset = offset;
-		parse_varint(tvb, move(offset));
-
-		tvbuff_t *sub_tvb = tvb_new_subset_length(tvb,
-			original_offset, offset - original_offset);
-
-		PBDisplayVarint d;
-		d.display(tree, sub_tvb, id);
-	}
-
-	void dissect_str(int id)
-	{
-		guint8 length = parse_varint(tvb, move(offset));
-
-		DISSECTOR_ASSERT(tvb_length_remaining(tvb, offset) >= length);
-
-		tvbuff_t *sub_tvb = tvb_new_subset_length(tvb, offset, length);
-		offset += length;
-
-		PBDisplayBlob d;
-		d.display(tree, sub_tvb, id);
-	}
-
-	void dissect_more()
-	{
+	while (tvb_length_remaining(tvb, offset) > 0) {
 		gint64 header = parse_varint(tvb, move(offset));
 		guint8 type = header & 7;
 		gint id = header >> 3;
+		PBDisplay *displayer = NULL;
+		tvbuff_t *sub_tvb = NULL;
 
-		if (type == 0)
-			dissect_varint(id);
-		else if (type == 2)
-			dissect_str(id);
-		else if (type == 5)
-			dissect_fixedint(id);
-		else
+		if (type == 0) {
+			gint original_offset = offset;
+			parse_varint(tvb, move(offset));
+
+			sub_tvb = tvb_new_subset_length(tvb,
+				original_offset, offset - original_offset);
+
+			displayer = &displayVarint;
+		} else if (type == 2) {
+			guint8 length = parse_varint(tvb, move(offset));
+
+			DISSECTOR_ASSERT(tvb_length_remaining(tvb, offset) >= length);
+
+			sub_tvb = tvb_new_subset_length(tvb, offset, length);
+			offset += length;
+
+			displayer = &displayBlob;
+		} else if (type == 5) {
+			DISSECTOR_ASSERT(tvb_length_remaining(tvb, offset) >= 4);
+
+			sub_tvb = tvb_new_subset_length(tvb, offset, 4);
+			offset += 4;
+
+			displayer = &displayFixedint;
+		} else
 			DISSECTOR_ASSERT_NOT_REACHED();
-	}
-};
 
-void
-dissect_protobuf(tvbuff_t *tvb, proto_tree *tree)
-{
-	ProtobufDissector pbdis(tvb, tree);
-
-	while (pbdis.still_remaining()) {
-		pbdis.dissect_more();
+		displayer->display(tree, sub_tvb, id);
 	}
 }

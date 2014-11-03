@@ -2,6 +2,8 @@ extern "C" {
 #include <epan/packet.h>
 }
 
+#include <vector>
+
 class PBDisplay
 {
 private:
@@ -14,7 +16,7 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };
 
-class PBDisplayFixedint : PBDisplay
+class PBDisplayFixedint : public PBDisplay
 {
 public:
 	PBDisplayFixedint();
@@ -22,7 +24,7 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id);
 };
 
-class PBDisplayVarint : PBDisplay
+class PBDisplayVarint : public PBDisplay
 {
 public:
 	PBDisplayVarint();
@@ -30,7 +32,7 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id);
 };
 
-class PBDisplayBlob : PBDisplay
+class PBDisplayBlob : public PBDisplay
 {
 public:
 	PBDisplayBlob();
@@ -38,4 +40,4 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id);
 };
 
-void dissect_protobuf(tvbuff_t *tvb, proto_tree *tree);
+void dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, std::vector<PBDisplay> &packet_desc);

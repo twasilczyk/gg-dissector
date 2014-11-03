@@ -137,7 +137,7 @@ dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, vector<shared_ptr<PBDisplay>> 
 	}
 }
 
-PBDisplayString::PBDisplayString(GGPFieldBlob field):PBDisplay(PBTYPE_STRING),field(field) {};
+PBDisplayString::PBDisplayString(GGPFieldString field):PBDisplay(PBTYPE_STRING),field(field) {};
 void PBDisplayString::display(proto_tree *tree, tvbuff_t *tvb)
 {
 	proto_tree_add_item(tree, field, tvb, 0, tvb_length(tvb), 0);

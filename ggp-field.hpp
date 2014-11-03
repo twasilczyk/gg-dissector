@@ -55,4 +55,12 @@ public:
 	GGPFieldBlob(const char *name, const char *abbrev, const char *blurb);
 };
 
+class GGPFieldString : public GGPField
+{
+private:
+	virtual void fill_header_field_info(header_field_info &info);
+public:
+	GGPFieldString(const char *name, const char *abbrev, const char *blurb);
+};
+
 #endif /* _GGP_FIELD_HPP_ */

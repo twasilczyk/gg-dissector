@@ -106,3 +106,15 @@ GGPFieldBlob::fill_header_field_info(header_field_info &info)
 	info.type = FT_BYTES;
 	info.display = BASE_NONE;
 }
+
+GGPFieldString::GGPFieldString(const char *name, const char *abbrev, const char *blurb):
+	GGPField(name, abbrev, blurb)
+{
+}
+
+void
+GGPFieldString::fill_header_field_info(header_field_info &info)
+{
+	info.type = FT_STRING;
+	info.display = BASE_NONE;
+}

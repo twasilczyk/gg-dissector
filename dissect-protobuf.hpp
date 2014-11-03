@@ -54,9 +54,9 @@ public:
 class PBDisplayString : public PBDisplay
 {
 private:
-	GGPFieldBlob field;
+	GGPFieldString field;
 public:
-	PBDisplayString(GGPFieldBlob field);
+	PBDisplayString(GGPFieldString field);
 
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };

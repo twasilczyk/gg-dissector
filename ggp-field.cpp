@@ -72,13 +72,20 @@ GGPField::register_all(int parent)
 GGPFieldUINT32::GGPFieldUINT32(const char *name, const char *abbrev, const char *blurb):
 	GGPField(name, abbrev, blurb)
 {
+	base = BASE_DEC;
 }
 
 void
 GGPFieldUINT32::fill_header_field_info(header_field_info &info)
 {
 	info.type = FT_UINT32;
-	info.display = BASE_DEC;
+	info.display = base;
+}
+
+GGPFieldHEX32::GGPFieldHEX32(const char *name, const char *abbrev, const char *blurb):
+	GGPFieldUINT32(name, abbrev, blurb)
+{
+	base = BASE_HEX;
 }
 
 GGPFieldEnum32::GGPFieldEnum32(const char *name, const char *abbrev, const char *blurb,

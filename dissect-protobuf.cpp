@@ -102,13 +102,14 @@ void PBDisplay::display(proto_tree*, tvbuff_t*)
 	DISSECTOR_ASSERT_NOT_REACHED();
 }
 
+static PBDisplayUnknownVarint displayVarint;
+static PBDisplayUnknownFixedint displayFixedint;
+static PBDisplayUnknownBlob displayBlob;
+
 void
 dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, vector<shared_ptr<PBDisplay>> &packet_desc)
 {
 	gint offset = 0;
-	PBDisplayUnknownVarint displayVarint;
-	PBDisplayUnknownFixedint displayFixedint;
-	PBDisplayUnknownBlob displayBlob;
 
 	while (tvb_length_remaining(tvb, offset) > 0) {
 		gint64 header = parse_varint(tvb, move(offset));
@@ -150,6 +151,40 @@ dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, vector<shared_ptr<PBDisplay>> 
 		displayer->display(tree, sub_tvb, id, static_cast<PBType>(type));
 	}
 }
+
+PBDisplayUnknown::PBDisplayUnknown():PBDisplay(PBTYPE_VARINT)
+{
+}
+void PBDisplayUnknown::display(proto_tree *tree, tvbuff_t *tvb, int id, PBType type)
+{
+	switch (type) {
+		case PBTYPE_VARINT:
+			displayVarint.display(tree, tvb, id);
+			return;
+		case PBTYPE_FIXED64:
+			DISSECTOR_ASSERT_NOT_REACHED();
+			return;
+		case PBTYPE_STRING:
+			displayBlob.display(tree, tvb, id);
+			return;
+		case PBTYPE_FIXED32:
+			displayFixedint.display(tree, tvb, id);
+			return;
+	}
+	DISSECTOR_ASSERT_NOT_REACHED();
+}
+
+PBDisplayUINT32::PBDisplayUINT32(GGPFieldUINT32 field):PBDisplay(PBTYPE_FIXED32),field(field) {};
+void PBDisplayUINT32::display(proto_tree *tree, tvbuff_t *tvb)
+{
+	proto_tree_add_uint(tree, field, tvb, 0, 4, tvb_get_letohl(tvb, 0));
+};
+
+PBDisplayVarint::PBDisplayVarint(GGPFieldUINT32 field):PBDisplay(PBTYPE_VARINT),field(field) {};
+void PBDisplayVarint::display(proto_tree *tree, tvbuff_t *tvb)
+{
+	proto_tree_add_uint(tree, field, tvb, 0, tvb_length(tvb), parse_varint(tvb));
+};
 
 PBDisplayString::PBDisplayString(GGPFieldString field):PBDisplay(PBTYPE_STRING),field(field) {};
 void PBDisplayString::display(proto_tree *tree, tvbuff_t *tvb)

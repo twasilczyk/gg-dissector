@@ -33,8 +33,16 @@ class GGPFieldUINT32 : public GGPField
 {
 private:
 	virtual void fill_header_field_info(header_field_info &info);
+protected:
+	base_display_e base;
 public:
 	GGPFieldUINT32(const char *name, const char *abbrev, const char *blurb);
+};
+
+class GGPFieldHEX32 : public GGPFieldUINT32
+{
+public:
+	GGPFieldHEX32(const char *name, const char *abbrev, const char *blurb);
 };
 
 class GGPFieldEnum32 : public GGPField

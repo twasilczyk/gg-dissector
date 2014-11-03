@@ -27,6 +27,34 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };
 
+class PBDisplayUnknown : public PBDisplay
+{
+public:
+	PBDisplayUnknown();
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id, PBType type);
+};
+
+class PBDisplayUINT32 : public PBDisplay
+{
+private:
+	GGPFieldUINT32 field;
+public:
+	PBDisplayUINT32(GGPFieldUINT32 field);
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
+
+class PBDisplayVarint : public PBDisplay
+{
+private:
+	GGPFieldUINT32 field;
+public:
+	PBDisplayVarint(GGPFieldUINT32 field);
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
+
 class PBDisplayString : public PBDisplay
 {
 private:

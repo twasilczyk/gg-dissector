@@ -72,3 +72,17 @@ GGPFieldUINT32::fill_header_field_info(header_field_info &info)
 	info.type = FT_UINT32;
 	info.display = BASE_DEC;
 }
+
+GGPFieldEnum32::GGPFieldEnum32(const char *name, const char *abbrev, const char *blurb,
+	const value_string *vals):
+	GGPField(name, abbrev, blurb),vals(vals)
+{
+}
+
+void
+GGPFieldEnum32::fill_header_field_info(header_field_info &info)
+{
+	info.type = FT_UINT32;
+	info.display = BASE_HEX;
+	info.strings = vals;
+}

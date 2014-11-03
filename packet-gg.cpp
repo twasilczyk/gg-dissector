@@ -35,12 +35,12 @@ static guint pref_gg_port = DEFAULT_GG_PORT;
 static gboolean pref_gg_reassemble_packets = TRUE;
 
 /* gg packet header */
-static GGPFieldUINT32 ggfield_packet_length("length", "gg.packet_length", "length of packet contents");
-#if 0
-static int hf_gg_sent_packet_type = -1;
-static int hf_gg_recv_packet_type = -1;
-static int hf_gg_packet = -1;
-#endif
+static GGPFieldUINT32 ggfield_packet_length
+	("length", "gg.packet_length", "length of packet contents");
+static GGPFieldEnum32 ggfield_sent_packet_type
+	("type (sent)", "gg.sent_packet_type", "type of the sent packet", VALS(gg_packet_sent_names));
+static GGPFieldEnum32 ggfield_recv_packet_type
+	("type (received)", "gg.recv_packet_type", "type of the received packet", VALS(gg_packet_recv_names));
 
 /* packet detail tree */
 gint ett_gg = -1;
@@ -90,10 +90,10 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 	ti = proto_tree_add_item(tree, proto_gg, tvb, 0, packet_length + 8, FALSE);
 	gg_tree = proto_item_add_subtree(ti, ett_gg);
 	if (packet_direction == GG_PACKET_DIRECTION_SENT)
-		proto_tree_add_item(gg_tree, ggfield_packet_length/*hf_gg_sent_packet_type*/, tvb,
+		proto_tree_add_item(gg_tree, ggfield_sent_packet_type, tvb,
 			0, 4, ENC_LITTLE_ENDIAN);
 	else
-		proto_tree_add_item(gg_tree, ggfield_packet_length /*hf_gg_recv_packet_type*/, tvb,
+		proto_tree_add_item(gg_tree, ggfield_recv_packet_type, tvb,
 			0, 4, ENC_LITTLE_ENDIAN);
 
 	proto_tree_add_item(gg_tree, ggfield_packet_length, tvb,

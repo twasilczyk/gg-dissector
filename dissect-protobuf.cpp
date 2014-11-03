@@ -20,6 +20,32 @@ private:
 	tvbuff_t *tvb;
 	proto_tree *tree;
 
+	gint64
+	parse_varint()
+	{
+		gint64 val = 0;
+		int val_len = 0;
+		int shift = 0;
+		bool more = true;
+
+		while (more) {
+			DISSECTOR_ASSERT(tvb_length_remaining(tvb, offset) > 0);
+			DISSECTOR_ASSERT(++val_len <= 8);
+
+			gint64 b = tvb_get_guint8(tvb, offset++);
+
+			more = b & 0x80;
+			b &= ~0x80;
+
+			b <<= shift;
+			shift += 7;
+
+			val |= b;
+		}
+
+		return val;
+	}
+
 public:
 	ProtobufDissector(tvbuff_t *tvb, proto_tree *tree):
 		tvb(tvb),tree(tree)
@@ -43,17 +69,17 @@ public:
 
 	void dissect_varint(int id)
 	{
-		guint8 val = tvb_get_guint8(tvb, offset); //TODO: varint
+		gint original_offset = offset;
+		gint val = parse_varint();
 
-		proto_tree_add_bytes_format(tree, protobuf_varint, tvb, offset, 1, NULL,
+		proto_tree_add_bytes_format(tree, protobuf_varint, tvb,
+			original_offset, offset - original_offset, NULL,
 			"unknown field %d: %d", id, val);
-
-		offset += 1;
 	}
 
 	void dissect_str(int id)
 	{
-		guint8 length = tvb_get_guint8(tvb, offset++); //TODO: varint
+		guint8 length = parse_varint();
 
 		DISSECTOR_ASSERT(tvb_length_remaining(tvb, offset) >= length);
 
@@ -65,9 +91,9 @@ public:
 
 	void dissect_more()
 	{
-		guint8 type = tvb_get_guint8(tvb, offset++);
-		guint8 id = type >> 3;
-		type &= 7;
+		gint64 header = parse_varint();
+		guint8 type = header & 7;
+		gint id = header >> 3;
 
 		if (type == 0)
 			dissect_varint(id);

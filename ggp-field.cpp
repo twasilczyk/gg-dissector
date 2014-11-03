@@ -88,6 +88,18 @@ GGPFieldHEX32::GGPFieldHEX32(const char *name, const char *abbrev, const char *b
 	base = BASE_HEX;
 }
 
+GGPFieldHEX64::GGPFieldHEX64(const char *name, const char *abbrev, const char *blurb):
+	GGPField(name, abbrev, blurb)
+{
+}
+
+void
+GGPFieldHEX64::fill_header_field_info(header_field_info &info)
+{
+	info.type = FT_UINT64;
+	info.display = BASE_HEX;
+}
+
 GGPFieldEnum32::GGPFieldEnum32(const char *name, const char *abbrev, const char *blurb,
 	const value_string *vals):
 	GGPField(name, abbrev, blurb),vals(vals)

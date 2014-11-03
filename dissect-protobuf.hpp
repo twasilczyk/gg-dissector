@@ -45,6 +45,16 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };
 
+class PBDisplayUINT64 : public PBDisplay
+{
+private:
+	GGPFieldHEX64 field;
+public:
+	PBDisplayUINT64(GGPFieldHEX64 field);
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
+
 class PBDisplayVarint : public PBDisplay
 {
 private:

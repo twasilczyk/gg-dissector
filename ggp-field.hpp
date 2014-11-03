@@ -45,6 +45,14 @@ public:
 	GGPFieldHEX32(const char *name, const char *abbrev, const char *blurb);
 };
 
+class GGPFieldHEX64 : public GGPField
+{
+private:
+	virtual void fill_header_field_info(header_field_info &info);
+public:
+	GGPFieldHEX64(const char *name, const char *abbrev, const char *blurb);
+};
+
 class GGPFieldEnum32 : public GGPField
 {
 private:

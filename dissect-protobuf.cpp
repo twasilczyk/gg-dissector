@@ -162,7 +162,7 @@ void PBDisplayUnknown::display(proto_tree *tree, tvbuff_t *tvb, int id, PBType t
 			displayVarint.display(tree, tvb, id);
 			return;
 		case PBTYPE_FIXED64:
-			DISSECTOR_ASSERT_NOT_REACHED();
+			DISSECTOR_ASSERT_NOT_REACHED(); //TODO
 			return;
 		case PBTYPE_STRING:
 			displayBlob.display(tree, tvb, id);
@@ -178,6 +178,12 @@ PBDisplayUINT32::PBDisplayUINT32(GGPFieldUINT32 field):PBDisplay(PBTYPE_FIXED32)
 void PBDisplayUINT32::display(proto_tree *tree, tvbuff_t *tvb)
 {
 	proto_tree_add_uint(tree, field, tvb, 0, 4, tvb_get_letohl(tvb, 0));
+};
+
+PBDisplayUINT64::PBDisplayUINT64(GGPFieldHEX64 field):PBDisplay(PBTYPE_FIXED64),field(field) {};
+void PBDisplayUINT64::display(proto_tree *tree, tvbuff_t *tvb)
+{
+	proto_tree_add_uint(tree, field, tvb, 0, 8, tvb_get_letoh64(tvb, 0));
 };
 
 PBDisplayVarint::PBDisplayVarint(GGPFieldUINT32 field):PBDisplay(PBTYPE_VARINT),field(field) {};

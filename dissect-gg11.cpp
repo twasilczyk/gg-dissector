@@ -55,6 +55,20 @@ static vector<shared_ptr<PBDisplay>> packet_send_msg110 = {
 	make_shared<PBDisplayUINT64>(GGPFieldHEX64("chat_id", "gg.sendmsg110.chat_id", NULL)),
 };
 
+static vector<shared_ptr<PBDisplay>> packet_recv_msg110 = {
+	make_shared<PBDisplayUIN>(GGPFieldString("sender", "gg.recvmsg110.sender", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldHEX32("flags", "gg.recvmsg110.flags", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT32("seq", "gg.recvmsg110.seq", NULL)),
+	make_shared<PBDisplayUINT32>(GGPFieldUINT32("time", "gg.recvmsg110.time", NULL)),
+	make_shared<PBDisplayString>(GGPFieldString("msg_plain", "gg.recvmsg110.msg_plain", NULL)),
+	make_shared<PBDisplayString>(GGPFieldString("msg_xhtml", "gg.recvmsg110.msg_xhtml", NULL)),
+	make_shared<PBDisplayBlob>(GGPFieldBlob("data", "gg.recvmsg110.data", NULL)),
+	make_shared<PBDisplayUnknown>(),
+	make_shared<PBDisplayUINT64>(GGPFieldHEX64("msg_id", "gg.recvmsg110.msg_id", NULL)),
+	make_shared<PBDisplayUINT64>(GGPFieldHEX64("chat_id", "gg.recvmsg110.chat_id", NULL)),
+	make_shared<PBDisplayUINT64>(GGPFieldHEX64("conv_id", "gg.recvmsg110.conv_id", NULL)),
+};
+
 void dissect_gg11_login105(tvbuff_t *tvb, proto_tree *tree)
 {
 	dissect_protobuf(tvb, tree, packet_login105);
@@ -63,4 +77,9 @@ void dissect_gg11_login105(tvbuff_t *tvb, proto_tree *tree)
 void dissect_gg11_send_msg110(tvbuff_t *tvb, proto_tree *tree)
 {
 	dissect_protobuf(tvb, tree, packet_send_msg110);
+}
+
+void dissect_gg11_recv_msg110(tvbuff_t *tvb, proto_tree *tree)
+{
+	dissect_protobuf(tvb, tree, packet_recv_msg110);
 }

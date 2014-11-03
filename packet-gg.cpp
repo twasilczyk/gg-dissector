@@ -138,6 +138,8 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 	}
 	else // recv
 	{
+		if (packet_type == GG_PACKET_RECV_MSG110)
+			dissect_gg11_recv_msg110(data_tvb, gg_tree);
 #if 0
 		if (packet_type == GG_PACKET_RECV_WELCOME)
 			gg_dissect_login_welcome(data_tvb, gg_tree);
@@ -163,8 +165,8 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 			gg_dissect_chat_invite_ack(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_LAST_DATES)
 			gg_tvb_dissect(data_tvb, gg_tree);
-		else
 #endif
+		else
 			proto_tree_add_item(gg_tree, ggfield_blob, data_tvb, 0, packet_length, FALSE);
 	}
 }

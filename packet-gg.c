@@ -62,14 +62,14 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 	{
 		packet_direction = GG_PACKET_DIRECTION_SENT;
 		col_append_str(pinfo->cinfo, COL_INFO, "sent: ");
-		packet_type_name = match_strval(packet_type,
+		packet_type_name = try_val_to_str(packet_type,
 			gg_packet_sent_names);
 	}
 	else
 	{
 		packet_direction = GG_PACKET_DIRECTION_RECV;
 		col_append_str(pinfo->cinfo, COL_INFO, "received: ");
-		packet_type_name = match_strval(packet_type,
+		packet_type_name = try_val_to_str(packet_type,
 			gg_packet_recv_names);
 	}
 	

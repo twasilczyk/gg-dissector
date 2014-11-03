@@ -27,30 +27,6 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };
 
-class PBDisplayFixedint : public PBDisplay
-{
-public:
-	PBDisplayFixedint();
-
-	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id);
-};
-
-class PBDisplayVarint : public PBDisplay
-{
-public:
-	PBDisplayVarint();
-
-	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id);
-};
-
-class PBDisplayBlob : public PBDisplay
-{
-public:
-	PBDisplayBlob();
-
-	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id);
-};
-
 class PBDisplayString : public PBDisplay
 {
 private:

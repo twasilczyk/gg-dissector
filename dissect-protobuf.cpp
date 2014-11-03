@@ -41,6 +41,45 @@ parse_varint(tvbuff_t *tvb, int &&offset = 0)
 	return val;
 }
 
+class PBDisplayUnknownFixedint : public PBDisplay
+{
+public:
+	PBDisplayUnknownFixedint():PBDisplay(PBTYPE_FIXED32) {}
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id)
+	{
+		guint32 val = tvb_get_letohl(tvb, 0);
+		proto_tree_add_uint_format(tree, protobuf_fixedint, tvb, 0, 4, val,
+			"unknown field %d: %d", id, val);
+	}
+};
+
+class PBDisplayUnknownVarint : public PBDisplay
+{
+public:
+	PBDisplayUnknownVarint():PBDisplay(PBTYPE_VARINT) {}
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id)
+	{
+		gint val = parse_varint(tvb, 0);
+
+		proto_tree_add_bytes_format(tree, protobuf_varint, tvb,
+			0, tvb_length(tvb), NULL,
+			"unknown field %d: %d", id, val);
+	}
+};
+
+class PBDisplayUnknownBlob : public PBDisplay
+{
+public:
+	PBDisplayUnknownBlob():PBDisplay(PBTYPE_STRING) {}
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb, int id)
+	{
+		proto_tree_add_bytes_format(tree, protobuf_blob, tvb, 0, tvb_length(tvb), NULL,
+			"unknown field %d: string[%d]", id, tvb_length(tvb));
+	}
+};
 
 PBDisplay::PBDisplay(PBType expected_type):expected_type(expected_type)
 {
@@ -63,38 +102,13 @@ void PBDisplay::display(proto_tree*, tvbuff_t*)
 	DISSECTOR_ASSERT_NOT_REACHED();
 }
 
-PBDisplayFixedint::PBDisplayFixedint():PBDisplay(PBTYPE_FIXED32) {}
-void PBDisplayFixedint::display(proto_tree *tree, tvbuff_t *tvb, int id)
-{
-	guint32 val = tvb_get_letohl(tvb, 0);
-	proto_tree_add_uint_format(tree, protobuf_fixedint, tvb, 0, 4, val,
-		"unknown field %d: %d", id, val);
-}
-
-PBDisplayVarint::PBDisplayVarint():PBDisplay(PBTYPE_VARINT) {}
-void PBDisplayVarint::display(proto_tree *tree, tvbuff_t *tvb, int id)
-{
-	gint val = parse_varint(tvb, 0);
-
-	proto_tree_add_bytes_format(tree, protobuf_varint, tvb,
-		0, tvb_length(tvb), NULL,
-		"unknown field %d: %d", id, val);
-}
-
-PBDisplayBlob::PBDisplayBlob():PBDisplay(PBTYPE_STRING) {}
-void PBDisplayBlob::display(proto_tree *tree, tvbuff_t *tvb, int id)
-{
-	proto_tree_add_bytes_format(tree, protobuf_blob, tvb, 0, tvb_length(tvb), NULL,
-		"unknown field %d: string[%d]", id, tvb_length(tvb));
-}
-
 void
 dissect_protobuf(tvbuff_t *tvb, proto_tree *tree, vector<shared_ptr<PBDisplay>> &packet_desc)
 {
 	gint offset = 0;
-	PBDisplayVarint displayVarint;
-	PBDisplayFixedint displayFixedint;
-	PBDisplayBlob displayBlob;
+	PBDisplayUnknownVarint displayVarint;
+	PBDisplayUnknownFixedint displayFixedint;
+	PBDisplayUnknownBlob displayBlob;
 
 	while (tvb_length_remaining(tvb, offset) > 0) {
 		gint64 header = parse_varint(tvb, move(offset));

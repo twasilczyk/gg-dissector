@@ -88,6 +88,25 @@ GGPFieldHEX32::GGPFieldHEX32(const char *name, const char *abbrev, const char *b
 	base = BASE_HEX;
 }
 
+GGPFieldUINT64::GGPFieldUINT64(const char *name, const char *abbrev, const char *blurb):
+	GGPField(name, abbrev, blurb)
+{
+	base = BASE_DEC;
+}
+
+void
+GGPFieldUINT64::fill_header_field_info(header_field_info &info)
+{
+	info.type = FT_UINT64;
+	info.display = base;
+}
+
+GGPFieldHEX64::GGPFieldHEX64(const char *name, const char *abbrev, const char *blurb):
+	GGPFieldUINT64(name, abbrev, blurb)
+{
+	base = BASE_HEX;
+}
+
 GGPFieldTimestamp::GGPFieldTimestamp(const char *name, const char *abbrev, const char *blurb):
 	GGPField(name, abbrev, blurb)
 {
@@ -98,18 +117,6 @@ GGPFieldTimestamp::fill_header_field_info(header_field_info &info)
 {
 	info.type = FT_ABSOLUTE_TIME;
 	info.display = ABSOLUTE_TIME_LOCAL;
-}
-
-GGPFieldHEX64::GGPFieldHEX64(const char *name, const char *abbrev, const char *blurb):
-	GGPField(name, abbrev, blurb)
-{
-}
-
-void
-GGPFieldHEX64::fill_header_field_info(header_field_info &info)
-{
-	info.type = FT_UINT64;
-	info.display = BASE_HEX;
 }
 
 GGPFieldEnum32::GGPFieldEnum32(const char *name, const char *abbrev, const char *blurb,

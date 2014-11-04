@@ -45,20 +45,28 @@ public:
 	GGPFieldHEX32(const char *name, const char *abbrev, const char *blurb);
 };
 
+class GGPFieldUINT64 : public GGPField
+{
+private:
+	virtual void fill_header_field_info(header_field_info &info);
+protected:
+	base_display_e base;
+public:
+	GGPFieldUINT64(const char *name, const char *abbrev, const char *blurb);
+};
+
+class GGPFieldHEX64 : public GGPFieldUINT64
+{
+public:
+	GGPFieldHEX64(const char *name, const char *abbrev, const char *blurb);
+};
+
 class GGPFieldTimestamp : public GGPField
 {
 private:
 	virtual void fill_header_field_info(header_field_info &info);
 public:
 	GGPFieldTimestamp(const char *name, const char *abbrev, const char *blurb);
-};
-
-class GGPFieldHEX64 : public GGPField
-{
-private:
-	virtual void fill_header_field_info(header_field_info &info);
-public:
-	GGPFieldHEX64(const char *name, const char *abbrev, const char *blurb);
 };
 
 class GGPFieldEnum32 : public GGPField

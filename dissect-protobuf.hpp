@@ -76,9 +76,9 @@ public:
 class PBDisplayVarint : public PBDisplay
 {
 private:
-	GGPFieldUINT32 field;
+	GGPFieldUINT64 field;
 public:
-	PBDisplayVarint(GGPFieldUINT32 field);
+	PBDisplayVarint(GGPFieldUINT64 field);
 
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };

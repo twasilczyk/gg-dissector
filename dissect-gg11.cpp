@@ -21,7 +21,7 @@ static vector<shared_ptr<PBDisplay>> packet_login105 = {
 	make_shared<PBDisplayString>(GGPFieldString("language", "gg.login105.language", NULL)),
 	make_shared<PBDisplayUIN>(GGPFieldString("uin", "gg.login105.uin", NULL)),
 	make_shared<PBDisplayBlob>(GGPFieldBlob("hash", "gg.login105.hash", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy1", "gg.login105.dummy1", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy1", "gg.login105.dummy1", NULL)),
 	make_shared<PBDisplayUINT32>(GGPFieldHEX32("dummy2", "gg.login105.dummy2", NULL)),
 	make_shared<PBDisplayUINT32>(GGPFieldHEX32("dummy3", "gg.login105.dummy3", NULL)),
 	make_shared<PBDisplayString>(GGPFieldString("client", "gg.login105.client", NULL)),
@@ -29,20 +29,20 @@ static vector<shared_ptr<PBDisplay>> packet_login105 = {
 	make_shared<PBDisplayString>(GGPFieldString("initial_descr", "gg.login105.initial_descr", NULL)),
 	make_shared<PBDisplayBlob>(GGPFieldBlob("dummy4", "gg.login105.dummy4", NULL)),
 	make_shared<PBDisplayString>(GGPFieldString("supported_features", "gg.login105.supported_features", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy5", "gg.login105.dummy5", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy6", "gg.login105.dummy6", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy5", "gg.login105.dummy5", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy6", "gg.login105.dummy6", NULL)),
 	make_shared<PBDisplayUINT32>(GGPFieldUINT32("dummy7", "gg.login105.dummy7", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy8", "gg.login105.dummy8", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy8", "gg.login105.dummy8", NULL)),
 	make_shared<PBDisplayUnknown>(),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy10", "gg.login105.dummy10", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy10", "gg.login105.dummy10", NULL)),
 	make_shared<PBDisplayUnknown>(),
 	make_shared<PBDisplayUnknown>(),
 	make_shared<PBDisplayUnknown>(),
 	make_shared<PBDisplayUnknown>(),
 	make_shared<PBDisplayBlob>(GGPFieldBlob("dummy15", "gg.login105.dummy15", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy16", "gg.login105.dummy16", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy16", "gg.login105.dummy16", NULL)),
 	make_shared<PBDisplayBlob>(GGPFieldBlob("dummy17", "gg.login105.dummy17", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy18", "gg.login105.dummy18", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy18", "gg.login105.dummy18", NULL)),
 	make_shared<PBDisplayUnknown>(),
 	make_shared<PBDisplayUnknown>(),
 	make_shared<PBDisplayUnknown>(),
@@ -50,16 +50,16 @@ static vector<shared_ptr<PBDisplay>> packet_login105 = {
 };
 
 static vector<shared_ptr<PBDisplay>> packet_login105_ok = {
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy1", "gg.login105ok.dummy1", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy1", "gg.login105ok.dummy1", NULL)),
 	make_shared<PBDisplayString>(GGPFieldString("dummyhash", "gg.login105ok.dummyhash", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("uin", "gg.login105ok.uin", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("uin", "gg.login105ok.uin", NULL)),
 	make_shared<PBDisplayTimestamp>(GGPFieldTimestamp("server_time", "gg.login105ok.server_time", NULL)),
 };
 
 static vector<shared_ptr<PBDisplay>> packet_send_msg110 = {
 	make_shared<PBDisplayUIN>(GGPFieldString("recipient", "gg.sendmsg110.recipient", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy1", "gg.sendmsg110.dummy1", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("seq", "gg.sendmsg110.seq", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy1", "gg.sendmsg110.dummy1", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("seq", "gg.sendmsg110.seq", NULL)),
 	make_shared<PBDisplayUnknown>(),
 	make_shared<PBDisplayString>(GGPFieldString("msg_plain", "gg.sendmsg110.msg_plain", NULL)),
 	make_shared<PBDisplayString>(GGPFieldString("msg_xhtml", "gg.sendmsg110.xhtml", NULL)),
@@ -71,8 +71,8 @@ static vector<shared_ptr<PBDisplay>> packet_send_msg110 = {
 
 static vector<shared_ptr<PBDisplay>> packet_recv_msg110 = {
 	make_shared<PBDisplayUIN>(GGPFieldString("sender", "gg.recvmsg110.sender", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldHEX32("flags", "gg.recvmsg110.flags", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("seq", "gg.recvmsg110.seq", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldHEX64("flags", "gg.recvmsg110.flags", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("seq", "gg.recvmsg110.seq", NULL)),
 	make_shared<PBDisplayUINT32>(GGPFieldUINT32("time", "gg.recvmsg110.time", NULL)),
 	make_shared<PBDisplayString>(GGPFieldString("msg_plain", "gg.recvmsg110.msg_plain", NULL)),
 	make_shared<PBDisplayString>(GGPFieldString("msg_xhtml", "gg.recvmsg110.msg_xhtml", NULL)),
@@ -90,7 +90,7 @@ static vector<shared_ptr<PBDisplay>> packet_imtoken = {
 GGPFieldBlob option_field("option", "gg.options.option", NULL);
 static vector<shared_ptr<PBDisplay>> packet_options = {
 	make_shared<GGPDisplayOption>(),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy1", "gg.options.dummy1", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy1", "gg.options.dummy1", NULL)),
 };
 GGPFieldString option_key_field("key", "gg.options.option.key", NULL);
 GGPFieldString option_value_field("value", "gg.options.option.value", NULL);
@@ -100,11 +100,19 @@ static vector<shared_ptr<PBDisplay>> packet_options_option = {
 };
 
 static vector<shared_ptr<PBDisplay>> packet_lastdates = {
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy1", "gg.lastdates.dummy1", NULL)),
-	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy2", "gg.lastdates.dummy2", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy1", "gg.lastdates.dummy1", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy2", "gg.lastdates.dummy2", NULL)),
 	make_shared<PBDisplayVITimestamp>(GGPFieldTimestamp("dummydate1", "gg.lastdates.dummydate1", NULL)),
 	make_shared<PBDisplayVITimestamp>(GGPFieldTimestamp("dummydate2", "gg.lastdates.dummydate2", NULL)),
 	make_shared<PBDisplayVITimestamp>(GGPFieldTimestamp("dummydate3", "gg.lastdates.dummydate3", NULL)),
+};
+
+static vector<shared_ptr<PBDisplay>> packet_mpanotify = {
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy1", "gg.mpanotify.dummy1", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy2", "gg.mpanotify.dummy2", NULL)),
+	make_shared<PBDisplayString>(GGPFieldString("data", "gg.mpanotify.data", NULL)),
+	make_shared<PBDisplayString>(GGPFieldString("content_type", "gg.mpanotify.content_type", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummyid", "gg.mpanotify.dummyid", NULL)),
 };
 
 void init_gg11()
@@ -149,6 +157,11 @@ void dissect_gg11_options(tvbuff_t *tvb, proto_tree *tree)
 void dissect_gg11_lastdates(tvbuff_t *tvb, proto_tree *tree)
 {
 	dissect_protobuf(tvb, tree, packet_lastdates);
+}
+
+void dissect_gg11_mpanotify(tvbuff_t *tvb, proto_tree *tree)
+{
+	dissect_protobuf(tvb, tree, packet_mpanotify);
 }
 
 void GGPDisplayOption::display(proto_tree *tree, tvbuff_t *tvb)

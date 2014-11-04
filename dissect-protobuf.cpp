@@ -242,10 +242,10 @@ void PBDisplayUINT64::display(proto_tree *tree, tvbuff_t *tvb)
 	proto_tree_add_uint64(tree, field, tvb, 0, 8, tvb_get_letoh64(tvb, 0));
 };
 
-PBDisplayVarint::PBDisplayVarint(GGPFieldUINT32 field):PBDisplay(PBTYPE_VARINT),field(field) {};
+PBDisplayVarint::PBDisplayVarint(GGPFieldUINT64 field):PBDisplay(PBTYPE_VARINT),field(field) {};
 void PBDisplayVarint::display(proto_tree *tree, tvbuff_t *tvb)
 {
-	proto_tree_add_uint(tree, field, tvb, 0, tvb_length(tvb), parse_varint(tvb));
+	proto_tree_add_uint64(tree, field, tvb, 0, tvb_length(tvb), parse_varint(tvb));
 };
 
 PBDisplayUIN::PBDisplayUIN(GGPFieldString field):PBDisplay(PBTYPE_STRING),field(field) {};

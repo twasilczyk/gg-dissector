@@ -13,3 +13,5 @@ void dissect_gg11_options(tvbuff_t *tvb, proto_tree *tree);
 void dissect_gg11_lastdates(tvbuff_t *tvb, proto_tree *tree);
 void dissect_gg11_mpanotify(tvbuff_t *tvb, proto_tree *tree);
 void dissect_gg11_ack110(tvbuff_t *tvb, proto_tree *tree);
+void dissect_gg11_send_msg_ack110(tvbuff_t *tvb, proto_tree *tree);
+void dissect_gg11_chat_info_update(tvbuff_t *tvb, proto_tree *tree);

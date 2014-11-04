@@ -139,6 +139,30 @@ static vector<shared_ptr<PBDisplay>> packet_ack110 = {
 	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy1", "gg.ack110.dummy1", NULL)),
 };
 
+static vector<shared_ptr<PBDisplay>> packet_send_msg_ack110 = {
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("msg_type", "gg.sendmsgack110.msg_type", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("seq", "gg.sendmsgack110.seq", NULL)),
+	make_shared<PBDisplayTimestamp>(GGPFieldTimestamp("time", "gg.sendmsgack110.time", NULL)),
+	make_shared<PBDisplayUINT64>(GGPFieldHEX64("msg_id", "gg.sendmsgack110.msg_id", NULL)),
+	make_shared<PBDisplayUINT64>(GGPFieldHEX64("conv_id", "gg.sendmsgack110.conv_id", NULL)),
+	make_shared<PBDisplayBlob>(GGPFieldBlob("link", "gg.sendmsgack110.link", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy1", "gg.sendmsgack110.dummy1", NULL)),
+};
+
+static vector<shared_ptr<PBDisplay>> packet_chat_info_update = {
+	make_shared<PBDisplayUIN>(GGPFieldString("participant", "gg.chat_info_update.participant", NULL)),
+	make_shared<PBDisplayUIN>(GGPFieldString("inviter", "gg.chat_info_update.inviter", NULL)),
+	make_shared<PBDisplayUINT32>(GGPFieldUINT32("update_type", "gg.chat_info_update.update_type", NULL)),
+	make_shared<PBDisplayTimestamp>(GGPFieldTimestamp("time", "gg.chat_info_update.time", NULL)),
+	make_shared<PBDisplayUINT32>(GGPFieldUINT32("dummy1", "gg.chat_info_update.dummy1", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("version", "gg.chat_info_update.version", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy2", "gg.chat_info_update.dummy2", NULL)),
+	make_shared<PBDisplayUnknown>(),
+	make_shared<PBDisplayUINT64>(GGPFieldHEX64("msg_id", "gg.chat_info_update.msg_id", NULL)),
+	make_shared<PBDisplayUINT64>(GGPFieldHEX64("chat_id", "gg.chat_info_update.chat_id", NULL)),
+	make_shared<PBDisplayUINT64>(GGPFieldHEX64("conv_id", "gg.chat_info_update.conv_id", NULL)),
+};
+
 void init_gg11()
 {
 	static gint *ett[] = {
@@ -192,6 +216,16 @@ void dissect_gg11_mpanotify(tvbuff_t *tvb, proto_tree *tree)
 void dissect_gg11_ack110(tvbuff_t *tvb, proto_tree *tree)
 {
 	dissect_protobuf(tvb, tree, packet_ack110);
+}
+
+void dissect_gg11_send_msg_ack110(tvbuff_t *tvb, proto_tree *tree)
+{
+	dissect_protobuf(tvb, tree, packet_send_msg_ack110);
+}
+
+void dissect_gg11_chat_info_update(tvbuff_t *tvb, proto_tree *tree)
+{
+	dissect_protobuf(tvb, tree, packet_chat_info_update);
 }
 
 void GGPDisplayOption::display(proto_tree *tree, tvbuff_t *tvb)

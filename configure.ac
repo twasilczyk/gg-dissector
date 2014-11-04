@@ -12,7 +12,6 @@ AC_CHECK_HEADERS([stdarg.h])
 
 AC_DISABLE_STATIC
 
-AC_PROG_CC
 AC_PROG_CXX
 AM_PROG_AR
 AC_PROG_LIBTOOL
@@ -29,13 +28,6 @@ if test -z "$WIRESHARK"; then
 fi
 WIRESHARK_version=`$WIRESHARK -v | grep '^wireshark ' | head -n 1 | cut -d' ' -f 2`
 WIRESHARK_includes="$includedir/wireshark"
-
-CFLAGS="$CFLAGS -I$WIRESHARK_includes $GLIB_CFLAGS"
-CFLAGS="$CFLAGS -D_U_=__attribute__\(\(unused\)\)"
-CFLAGS="$CFLAGS -DXUSE_MTSAFE_API -fPIC -DPIC"
-CFLAGS="$CFLAGS -DINET6 -Wpointer-arith -DXTHREADS -D_REENTRANT"
-CFLAGS="$CFLAGS -DHAVE_CONFIG_H"
-CFLAGS="$CFLAGS -Wall -Wextra"
 
 CXXFLAGS="$CXXFLAGS -I$WIRESHARK_includes $GLIB_CFLAGS"
 CXXFLAGS="$CXXFLAGS -D_U_=__attribute__\(\(unused\)\)"

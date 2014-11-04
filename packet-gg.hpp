@@ -5,15 +5,11 @@
 # include "config.h"
 #endif
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 #include <epan/packet.h>
 
-#ifdef __cplusplus
 }
-#endif
 
 #define DEFAULT_GG_PORT 8074
 

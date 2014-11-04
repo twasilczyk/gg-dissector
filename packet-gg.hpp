@@ -1,5 +1,5 @@
-#ifndef _PACKET_GG_H
-#define _PACKET_GG_H
+#ifndef _PACKET_GG_HPP_
+#define _PACKET_GG_HPP_
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
@@ -19,4 +19,4 @@ extern "C" {
 
 extern dissector_handle_t json_dissector;
 
-#endif
+#endif /* _PACKET_GG_HPP_ */

@@ -5,4 +5,4 @@ libgg_la_SOURCES = \
 	packet-gg.cpp \
 	dissect-gg11.cpp \
 	dissect-protobuf.cpp \
-	gg-packet-type.c
+	ggp-packet-type.cpp

@@ -9,7 +9,7 @@ extern "C" {
 
 #include <cstdio>
 
-#include "gg-packet-type.h"
+#include "ggp-packet-type.hpp"
 
 #include "ggp-field.hpp"
 

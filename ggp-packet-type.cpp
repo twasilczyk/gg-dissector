@@ -1,4 +1,4 @@
-#include "gg-packet-type.h"
+#include "ggp-packet-type.hpp"
 
 #define GG_PACKET_NAME(type, name) { GG_PACKET_##type##_##name, #name },
 

@@ -1,9 +1,13 @@
-#ifndef _GG_PACKET_TYPE_H
-#define _GG_PACKET_TYPE_H
+#ifndef _GG_PACKET_TYPE_HPP_
+#define _GG_PACKET_TYPE_HPP_
 
 #include "packet-gg.hpp"
 
+extern "C" {
+
 #include <epan/packet.h>
+
+}
 
 #define GG_PACKET_SEND_NEW_STATUS 0x0002
 #define GG_PACKET_SEND_PONG 0x0007

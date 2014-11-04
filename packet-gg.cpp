@@ -2,7 +2,6 @@
 
 extern "C" {
 
-#include <epan/packet.h>
 #include <epan/prefs.h>
 #include <epan/dissectors/packet-tcp.h>
 
@@ -48,6 +47,8 @@ static GGPFieldBlob ggfield_blob
 
 /* packet detail tree */
 gint ett_gg = -1;
+
+dissector_handle_t json_dissector;
 
 typedef enum
 {
@@ -226,5 +227,6 @@ static void proto_reg_handoff_gg(void)
 
 	dissector_add_uint("tcp.port", pref_gg_port, gg_handle);
 	pref_gg_port_old = pref_gg_port;
-}
 
+	json_dissector = find_dissector("json");
+}

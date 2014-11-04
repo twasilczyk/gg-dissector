@@ -9,11 +9,19 @@
 using namespace std;
 
 gint ett_option = -1;
+gint ett_mpanotify_data = -1;
 
 class GGPDisplayOption : public PBDisplay
 {
 public:
 	GGPDisplayOption():PBDisplay(PBTYPE_STRING) {}
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
+
+class GGPDisplayJson : public PBDisplay
+{
+public:
+	GGPDisplayJson():PBDisplay(PBTYPE_STRING) {}
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };
 
@@ -107,10 +115,11 @@ static vector<shared_ptr<PBDisplay>> packet_lastdates = {
 	make_shared<PBDisplayVITimestamp>(GGPFieldTimestamp("dummydate3", "gg.lastdates.dummydate3", NULL)),
 };
 
+GGPFieldString packet_mpanotify_data("data", "gg.mpanotify.data", NULL);
 static vector<shared_ptr<PBDisplay>> packet_mpanotify = {
 	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy1", "gg.mpanotify.dummy1", NULL)),
 	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy2", "gg.mpanotify.dummy2", NULL)),
-	make_shared<PBDisplayString>(GGPFieldString("data", "gg.mpanotify.data", NULL)),
+	make_shared<GGPDisplayJson>(),
 	make_shared<PBDisplayString>(GGPFieldString("content_type", "gg.mpanotify.content_type", NULL)),
 	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummyid", "gg.mpanotify.dummyid", NULL)),
 };
@@ -118,7 +127,8 @@ static vector<shared_ptr<PBDisplay>> packet_mpanotify = {
 void init_gg11()
 {
 	static gint *ett[] = {
-		&ett_option
+		&ett_option,
+		&ett_mpanotify_data
 	};
 
 	proto_register_subtree_array(ett, array_length(ett));
@@ -192,4 +202,23 @@ void GGPDisplayOption::display(proto_tree *tree, tvbuff_t *tvb)
 
 	g_ptr_array_free(fields, TRUE);
 
+}
+
+void GGPDisplayJson::display(proto_tree *tree, tvbuff_t *tvb)
+{
+	proto_item *ti = proto_tree_add_item(tree, packet_mpanotify_data, tvb, 0, tvb_length(tvb), 0);
+
+	if (!json_dissector)
+		return;
+
+	proto_tree *subtree = proto_item_add_subtree(ti, ett_mpanotify_data);
+
+	packet_info *pinfo = tree->tree_data->pinfo;
+
+	void *private_data = pinfo->private_data;
+	pinfo->private_data = NULL;
+
+	call_dissector(json_dissector, tvb, pinfo, subtree);
+
+	pinfo->private_data = private_data;
 }

@@ -5,8 +5,18 @@
 # include "config.h"
 #endif
 
-#include <glib.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <epan/packet.h>
+
+#ifdef __cplusplus
+}
+#endif
 
 #define DEFAULT_GG_PORT 8074
+
+extern dissector_handle_t json_dissector;
 
 #endif

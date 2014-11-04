@@ -248,6 +248,15 @@ void PBDisplayVarint::display(proto_tree *tree, tvbuff_t *tvb)
 	proto_tree_add_uint64(tree, field, tvb, 0, tvb_length(tvb), parse_varint(tvb));
 };
 
+PBDisplayEnum::PBDisplayEnum(GGPFieldEnum field):PBDisplayVarint(field)
+{
+};
+void PBDisplayEnum::display(proto_tree *tree, tvbuff_t *tvb)
+{
+	proto_tree_add_item(tree, field, tvb, 0, tvb_length(tvb), parse_varint(tvb));
+};
+
+
 PBDisplayUIN::PBDisplayUIN(GGPFieldString field):PBDisplay(PBTYPE_STRING),field(field) {};
 void PBDisplayUIN::display(proto_tree *tree, tvbuff_t *tvb)
 {

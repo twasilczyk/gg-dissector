@@ -92,19 +92,33 @@ GGPFieldUINT64::GGPFieldUINT64(const char *name, const char *abbrev, const char 
 	GGPField(name, abbrev, blurb)
 {
 	base = BASE_DEC;
+	strings = NULL;
 }
 
 void
 GGPFieldUINT64::fill_header_field_info(header_field_info &info)
 {
-	info.type = FT_UINT64;
-	info.display = base;
+	if (strings) {
+		info.type = FT_UINT32;
+		info.display = BASE_HEX;
+		info.strings = strings;
+	} else {
+		info.type = FT_UINT64;
+		info.display = base;
+	}
 }
 
 GGPFieldHEX64::GGPFieldHEX64(const char *name, const char *abbrev, const char *blurb):
 	GGPFieldUINT64(name, abbrev, blurb)
 {
 	base = BASE_HEX;
+}
+
+GGPFieldEnum::GGPFieldEnum(const char *name, const char *abbrev, const char *blurb,
+	const value_string *vals):
+	GGPFieldUINT64(name, abbrev, blurb)
+{
+	strings = vals;
 }
 
 GGPFieldTimestamp::GGPFieldTimestamp(const char *name, const char *abbrev, const char *blurb):

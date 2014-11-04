@@ -51,6 +51,7 @@ private:
 	virtual void fill_header_field_info(header_field_info &info);
 protected:
 	base_display_e base;
+	const value_string *strings;
 public:
 	GGPFieldUINT64(const char *name, const char *abbrev, const char *blurb);
 };
@@ -59,6 +60,13 @@ class GGPFieldHEX64 : public GGPFieldUINT64
 {
 public:
 	GGPFieldHEX64(const char *name, const char *abbrev, const char *blurb);
+};
+
+class GGPFieldEnum : public GGPFieldUINT64
+{
+public:
+	GGPFieldEnum(const char *name, const char *abbrev, const char *blurb,
+		const value_string *vals);
 };
 
 class GGPFieldTimestamp : public GGPField

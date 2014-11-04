@@ -124,6 +124,21 @@ static vector<shared_ptr<PBDisplay>> packet_mpanotify = {
 	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummyid", "gg.mpanotify.dummyid", NULL)),
 };
 
+const value_string ack110_types[] = {
+	{ 1, "MSG" },
+	{ 2, "CHAT" },
+	{ 3, "CHAT_INFO" },
+	{ 6, "MPA" },
+	{ 7, "TRANSFER_INFO" },
+	{ 0, NULL }
+};
+
+static vector<shared_ptr<PBDisplay>> packet_ack110 = {
+	make_shared<PBDisplayEnum>(GGPFieldEnum("type", "gg.ack110.type", NULL, VALS(ack110_types))),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("seq", "gg.ack110.seq", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT64("dummy1", "gg.ack110.dummy1", NULL)),
+};
+
 void init_gg11()
 {
 	static gint *ett[] = {
@@ -172,6 +187,11 @@ void dissect_gg11_lastdates(tvbuff_t *tvb, proto_tree *tree)
 void dissect_gg11_mpanotify(tvbuff_t *tvb, proto_tree *tree)
 {
 	dissect_protobuf(tvb, tree, packet_mpanotify);
+}
+
+void dissect_gg11_ack110(tvbuff_t *tvb, proto_tree *tree)
+{
+	dissect_protobuf(tvb, tree, packet_ack110);
 }
 
 void GGPDisplayOption::display(proto_tree *tree, tvbuff_t *tvb)

@@ -115,8 +115,8 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 			dissect_gg11_login105(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_SEND_MSG110)
 			dissect_gg11_send_msg110(data_tvb, gg_tree);
-		else if (packet_type == GG_PACKET_SEND_MPA_ACK)
-			dissect_protobuf(data_tvb, gg_tree);
+		else if (packet_type == GG_PACKET_SEND_ACK110)
+			dissect_gg11_ack110(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_SEND_UNKNOWN1)
 			dissect_protobuf(data_tvb, gg_tree);
 		else

@@ -75,10 +75,18 @@ public:
 
 class PBDisplayVarint : public PBDisplay
 {
-private:
+protected:
 	GGPFieldUINT64 field;
 public:
 	PBDisplayVarint(GGPFieldUINT64 field);
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
+
+class PBDisplayEnum : public PBDisplayVarint
+{
+public:
+	PBDisplayEnum(GGPFieldEnum field);
 
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };

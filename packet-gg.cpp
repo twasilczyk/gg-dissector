@@ -10,7 +10,6 @@ extern "C" {
 #include <cstdio>
 
 #include "gg-packet-type.h"
-#include "gg-bitfield.h"
 
 #include "ggp-field.hpp"
 

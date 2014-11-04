@@ -5,5 +5,4 @@ libgg_la_SOURCES = \
 	packet-gg.cpp \
 	dissect-gg11.cpp \
 	dissect-protobuf.cpp \
-	gg-bitfield.c \
 	gg-packet-type.c

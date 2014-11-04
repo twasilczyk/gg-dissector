@@ -9,6 +9,4 @@
 
 #define DEFAULT_GG_PORT 8074
 
-extern gint ett_gg;
-
 #endif

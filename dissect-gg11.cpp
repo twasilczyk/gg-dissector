@@ -8,6 +8,8 @@
 
 using namespace std;
 
+gint ett_option = -1;
+
 class GGPDisplayOption : public PBDisplay
 {
 public:
@@ -86,6 +88,15 @@ static vector<shared_ptr<PBDisplay>> packet_options_option = {
 	make_shared<PBDisplayString>(option_value_field),
 };
 
+void init_gg11()
+{
+	static gint *ett[] = {
+		&ett_option
+	};
+
+	proto_register_subtree_array(ett, array_length(ett));
+}
+
 void dissect_gg11_login105(tvbuff_t *tvb, proto_tree *tree)
 {
 	dissect_protobuf(tvb, tree, packet_login105);
@@ -109,7 +120,7 @@ void dissect_gg11_options(tvbuff_t *tvb, proto_tree *tree)
 void GGPDisplayOption::display(proto_tree *tree, tvbuff_t *tvb)
 {
 	proto_item *ti = proto_tree_add_item(tree, option_field, tvb, 0, tvb_length(tvb), 0);
-	proto_tree *subtree = proto_item_add_subtree(ti, ett_gg);
+	proto_tree *subtree = proto_item_add_subtree(ti, ett_option);
 
 	dissect_protobuf(tvb, subtree, packet_options_option);
 

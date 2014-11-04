@@ -187,6 +187,7 @@ static void proto_register_gg(void)
 		);
 	GGPField::register_all(proto_gg);
 	proto_register_subtree_array(ett, array_length(ett));
+	init_gg11();
 
 	/* Preference setting */
 	gg_module = prefs_register_protocol(proto_gg, NULL);

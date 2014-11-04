@@ -115,6 +115,8 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 			dissect_gg11_login105(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_SEND_MSG110)
 			dissect_gg11_send_msg110(data_tvb, gg_tree);
+		else if (packet_type == GG_PACKET_SEND_CHAT_SEND_MSG)
+			dissect_gg11_send_msg110(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_SEND_ACK110)
 			dissect_gg11_ack110(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_SEND_UNKNOWN1)
@@ -125,6 +127,8 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 	else // recv
 	{
 		if (packet_type == GG_PACKET_RECV_MSG110)
+			dissect_gg11_recv_msg110(data_tvb, gg_tree);
+		else if (packet_type == GG_PACKET_RECV_CHAT_RECV_MSG)
 			dissect_gg11_recv_msg110(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_SEND_MSG_ACK110)
 			dissect_gg11_send_msg_ack110(data_tvb, gg_tree);

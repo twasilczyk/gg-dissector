@@ -45,6 +45,16 @@ public:
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };
 
+class PBDisplayTimestamp : public PBDisplay
+{
+private:
+	GGPFieldTimestamp field;
+public:
+	PBDisplayTimestamp(GGPFieldTimestamp field);
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
+
 class PBDisplayUINT64 : public PBDisplay
 {
 private:

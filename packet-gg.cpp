@@ -134,7 +134,7 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 		else if (packet_type == GG_PACKET_RECV_OPTIONS)
 			dissect_gg11_options(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_LOGIN105_OK)
-			dissect_protobuf(data_tvb, gg_tree);
+			dissect_gg11_login105_ok(data_tvb, gg_tree);
 		else
 			proto_tree_add_item(gg_tree, ggfield_blob, data_tvb, 0, packet_length, FALSE);
 	}

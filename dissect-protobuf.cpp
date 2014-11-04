@@ -211,6 +211,17 @@ void PBDisplayUINT32::display(proto_tree *tree, tvbuff_t *tvb)
 	proto_tree_add_uint(tree, field, tvb, 0, 4, tvb_get_letohl(tvb, 0));
 };
 
+PBDisplayTimestamp::PBDisplayTimestamp(GGPFieldTimestamp field):PBDisplay(PBTYPE_FIXED32),field(field) {};
+void PBDisplayTimestamp::display(proto_tree *tree, tvbuff_t *tvb)
+{
+	nstime_t data;
+
+	data.secs = tvb_get_letohl(tvb, 0);
+	data.nsecs = 0;
+
+	proto_tree_add_time(tree, field, tvb, 0, 4, &data);
+};
+
 PBDisplayUINT64::PBDisplayUINT64(GGPFieldHEX64 field):PBDisplay(PBTYPE_FIXED64),field(field) {};
 void PBDisplayUINT64::display(proto_tree *tree, tvbuff_t *tvb)
 {

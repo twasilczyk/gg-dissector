@@ -88,6 +88,18 @@ GGPFieldHEX32::GGPFieldHEX32(const char *name, const char *abbrev, const char *b
 	base = BASE_HEX;
 }
 
+GGPFieldTimestamp::GGPFieldTimestamp(const char *name, const char *abbrev, const char *blurb):
+	GGPField(name, abbrev, blurb)
+{
+}
+
+void
+GGPFieldTimestamp::fill_header_field_info(header_field_info &info)
+{
+	info.type = FT_ABSOLUTE_TIME;
+	info.display = ABSOLUTE_TIME_LOCAL;
+}
+
 GGPFieldHEX64::GGPFieldHEX64(const char *name, const char *abbrev, const char *blurb):
 	GGPField(name, abbrev, blurb)
 {

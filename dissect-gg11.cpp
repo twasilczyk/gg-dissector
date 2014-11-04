@@ -49,6 +49,13 @@ static vector<shared_ptr<PBDisplay>> packet_login105 = {
 	make_shared<PBDisplayBlob>(GGPFieldBlob("dummy21", "gg.login105.dummy21", NULL)),
 };
 
+static vector<shared_ptr<PBDisplay>> packet_login105_ok = {
+	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy1", "gg.login105ok.dummy1", NULL)),
+	make_shared<PBDisplayString>(GGPFieldString("dummyhash", "gg.login105ok.dummyhash", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT32("uin", "gg.login105ok.uin", NULL)),
+	make_shared<PBDisplayTimestamp>(GGPFieldTimestamp("server_time", "gg.login105ok.server_time", NULL)),
+};
+
 static vector<shared_ptr<PBDisplay>> packet_send_msg110 = {
 	make_shared<PBDisplayUIN>(GGPFieldString("recipient", "gg.sendmsg110.recipient", NULL)),
 	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy1", "gg.sendmsg110.dummy1", NULL)),
@@ -100,6 +107,11 @@ void init_gg11()
 void dissect_gg11_login105(tvbuff_t *tvb, proto_tree *tree)
 {
 	dissect_protobuf(tvb, tree, packet_login105);
+}
+
+void dissect_gg11_login105_ok(tvbuff_t *tvb, proto_tree *tree)
+{
+	dissect_protobuf(tvb, tree, packet_login105_ok);
 }
 
 void dissect_gg11_send_msg110(tvbuff_t *tvb, proto_tree *tree)

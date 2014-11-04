@@ -130,7 +130,9 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 		else if (packet_type == GG_PACKET_RECV_MPA_NOTIFY)
 			dissect_protobuf(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_LAST_DATES)
-			dissect_protobuf(data_tvb, gg_tree);
+			dissect_gg11_lastdates(data_tvb, gg_tree);
+		else if (packet_type == GG_PACKET_RECV_IMTOKEN)
+			dissect_gg11_imtoken(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_OPTIONS)
 			dissect_gg11_options(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_LOGIN105_OK)

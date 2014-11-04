@@ -83,6 +83,10 @@ static vector<shared_ptr<PBDisplay>> packet_recv_msg110 = {
 	make_shared<PBDisplayUINT64>(GGPFieldHEX64("conv_id", "gg.recvmsg110.conv_id", NULL)),
 };
 
+static vector<shared_ptr<PBDisplay>> packet_imtoken = {
+	make_shared<PBDisplayString>(GGPFieldString("imtoken", "gg.imtoken.imtoken", NULL)),
+};
+
 GGPFieldBlob option_field("option", "gg.options.option", NULL);
 static vector<shared_ptr<PBDisplay>> packet_options = {
 	make_shared<GGPDisplayOption>(),
@@ -93,6 +97,14 @@ GGPFieldString option_value_field("value", "gg.options.option.value", NULL);
 static vector<shared_ptr<PBDisplay>> packet_options_option = {
 	make_shared<PBDisplayString>(option_key_field),
 	make_shared<PBDisplayString>(option_value_field),
+};
+
+static vector<shared_ptr<PBDisplay>> packet_lastdates = {
+	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy1", "gg.lastdates.dummy1", NULL)),
+	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy2", "gg.lastdates.dummy2", NULL)),
+	make_shared<PBDisplayVITimestamp>(GGPFieldTimestamp("dummydate1", "gg.lastdates.dummydate1", NULL)),
+	make_shared<PBDisplayVITimestamp>(GGPFieldTimestamp("dummydate2", "gg.lastdates.dummydate2", NULL)),
+	make_shared<PBDisplayVITimestamp>(GGPFieldTimestamp("dummydate3", "gg.lastdates.dummydate3", NULL)),
 };
 
 void init_gg11()
@@ -124,9 +136,19 @@ void dissect_gg11_recv_msg110(tvbuff_t *tvb, proto_tree *tree)
 	dissect_protobuf(tvb, tree, packet_recv_msg110);
 }
 
+void dissect_gg11_imtoken(tvbuff_t *tvb, proto_tree *tree)
+{
+	dissect_protobuf(tvb, tree, packet_imtoken);
+}
+
 void dissect_gg11_options(tvbuff_t *tvb, proto_tree *tree)
 {
 	dissect_protobuf(tvb, tree, packet_options);
+}
+
+void dissect_gg11_lastdates(tvbuff_t *tvb, proto_tree *tree)
+{
+	dissect_protobuf(tvb, tree, packet_lastdates);
 }
 
 void GGPDisplayOption::display(proto_tree *tree, tvbuff_t *tvb)

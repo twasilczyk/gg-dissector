@@ -222,6 +222,20 @@ void PBDisplayTimestamp::display(proto_tree *tree, tvbuff_t *tvb)
 	proto_tree_add_time(tree, field, tvb, 0, 4, &data);
 };
 
+PBDisplayVITimestamp::PBDisplayVITimestamp(GGPFieldTimestamp field):PBDisplayTimestamp(field)
+{
+	expected_type = PBTYPE_VARINT;
+};
+void PBDisplayVITimestamp::display(proto_tree *tree, tvbuff_t *tvb)
+{
+	nstime_t data;
+
+	data.secs = parse_varint(tvb);
+	data.nsecs = 0;
+
+	proto_tree_add_time(tree, field, tvb, 0, tvb_length(tvb), &data);
+};
+
 PBDisplayUINT64::PBDisplayUINT64(GGPFieldHEX64 field):PBDisplay(PBTYPE_FIXED64),field(field) {};
 void PBDisplayUINT64::display(proto_tree *tree, tvbuff_t *tvb)
 {

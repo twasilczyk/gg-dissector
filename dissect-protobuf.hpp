@@ -17,7 +17,7 @@ typedef enum
 
 class PBDisplay
 {
-private:
+protected:
 	PBType expected_type;
 public:
 	PBDisplay(PBType expected_type);
@@ -47,10 +47,18 @@ public:
 
 class PBDisplayTimestamp : public PBDisplay
 {
-private:
+protected:
 	GGPFieldTimestamp field;
 public:
 	PBDisplayTimestamp(GGPFieldTimestamp field);
+
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
+
+class PBDisplayVITimestamp : public PBDisplayTimestamp
+{
+public:
+	PBDisplayVITimestamp(GGPFieldTimestamp field);
 
 	virtual void display(proto_tree *tree, tvbuff_t *tvb);
 };

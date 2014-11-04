@@ -1,7 +1,7 @@
 #ifndef _GG_PACKET_TYPE_H
 #define _GG_PACKET_TYPE_H
 
-#include "packet-gg.h"
+#include "packet-gg.hpp"
 
 #include <epan/packet.h>
 

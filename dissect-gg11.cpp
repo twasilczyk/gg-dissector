@@ -1,14 +1,19 @@
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
+#include "packet-gg.hpp"
 
 #include "dissect-gg11.hpp"
-
 #include "dissect-protobuf.hpp"
 
 #include <vector>
+#include <iostream>
 
 using namespace std;
+
+class GGPDisplayOption : public PBDisplay
+{
+public:
+	GGPDisplayOption():PBDisplay(PBTYPE_STRING) {}
+	virtual void display(proto_tree *tree, tvbuff_t *tvb);
+};
 
 static vector<shared_ptr<PBDisplay>> packet_login105 = {
 	make_shared<PBDisplayString>(GGPFieldString("language", "gg.login105.language", NULL)),
@@ -69,6 +74,18 @@ static vector<shared_ptr<PBDisplay>> packet_recv_msg110 = {
 	make_shared<PBDisplayUINT64>(GGPFieldHEX64("conv_id", "gg.recvmsg110.conv_id", NULL)),
 };
 
+GGPFieldBlob option_field("option", "gg.options.option", NULL);
+static vector<shared_ptr<PBDisplay>> packet_options = {
+	make_shared<GGPDisplayOption>(),
+	make_shared<PBDisplayVarint>(GGPFieldUINT32("dummy1", "gg.options.dummy1", NULL)),
+};
+GGPFieldString option_key_field("key", "gg.options.option.key", NULL);
+GGPFieldString option_value_field("value", "gg.options.option.value", NULL);
+static vector<shared_ptr<PBDisplay>> packet_options_option = {
+	make_shared<PBDisplayString>(option_key_field),
+	make_shared<PBDisplayString>(option_value_field),
+};
+
 void dissect_gg11_login105(tvbuff_t *tvb, proto_tree *tree)
 {
 	dissect_protobuf(tvb, tree, packet_login105);
@@ -82,4 +99,39 @@ void dissect_gg11_send_msg110(tvbuff_t *tvb, proto_tree *tree)
 void dissect_gg11_recv_msg110(tvbuff_t *tvb, proto_tree *tree)
 {
 	dissect_protobuf(tvb, tree, packet_recv_msg110);
+}
+
+void dissect_gg11_options(tvbuff_t *tvb, proto_tree *tree)
+{
+	dissect_protobuf(tvb, tree, packet_options);
+}
+
+void GGPDisplayOption::display(proto_tree *tree, tvbuff_t *tvb)
+{
+	proto_item *ti = proto_tree_add_item(tree, option_field, tvb, 0, tvb_length(tvb), 0);
+	proto_tree *subtree = proto_item_add_subtree(ti, ett_gg);
+
+	dissect_protobuf(tvb, subtree, packet_options_option);
+
+	GPtrArray *fields = proto_all_finfos(subtree);
+	if (fields->len == 3) {
+		field_info *key_f = (field_info*)g_ptr_array_index(fields, 1);
+		field_info *value_f = (field_info*)g_ptr_array_index(fields, 2);
+
+		char *key = NULL, *value = NULL;
+
+		if (key_f)
+			key = fvalue_to_string_repr(&key_f->value, FTREPR_DISPLAY, NULL);
+		if (value_f)
+			value = fvalue_to_string_repr(&value_f->value, FTREPR_DISPLAY, NULL);
+
+		if (key && value)
+			proto_item_set_text(ti, "option: %s=%s", key, value);
+
+		free(key);
+		free(value);
+	}
+
+	g_ptr_array_free(fields, TRUE);
+
 }

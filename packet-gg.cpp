@@ -1,4 +1,4 @@
-#include "packet-gg.h"
+#include "packet-gg.hpp"
 
 extern "C" {
 
@@ -48,7 +48,6 @@ static GGPFieldBlob ggfield_blob
 
 /* packet detail tree */
 gint ett_gg = -1;
-static gint ett_gg_options = -1;
 
 typedef enum
 {
@@ -133,7 +132,7 @@ static void dissect_gg_packet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
 		else if (packet_type == GG_PACKET_RECV_LAST_DATES)
 			dissect_protobuf(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_OPTIONS)
-			dissect_protobuf(data_tvb, gg_tree);
+			dissect_gg11_options(data_tvb, gg_tree);
 		else if (packet_type == GG_PACKET_RECV_LOGIN105_OK)
 			dissect_protobuf(data_tvb, gg_tree);
 		else
@@ -176,8 +175,7 @@ void plugin_register(void)
 static void proto_register_gg(void)
 {
 	static gint *ett[] = {
-		&ett_gg,
-		&ett_gg_options
+		&ett_gg
 	};
 
 	module_t *gg_module;
